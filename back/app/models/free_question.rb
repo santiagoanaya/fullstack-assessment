@@ -1,0 +1,2 @@
+class FreeQuestion < Question
+end
