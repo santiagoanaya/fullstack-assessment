@@ -1,2 +1,0 @@
-class FreeQuestion < Question
-end
