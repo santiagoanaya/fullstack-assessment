@@ -15,7 +15,7 @@
             rules="required|max:20"
           >
             <v-row>
-              <v-col cols="2">
+              <v-col cols="3">
                 <v-subheader>Titulo</v-subheader>
               </v-col>
               <v-col cols="8">
@@ -38,7 +38,7 @@
             rules="required|max:40"
           >
             <v-row>
-              <v-col cols="2">
+              <v-col cols="3">
                 <v-subheader>Descripción</v-subheader>
               </v-col>
               <v-col cols="8">
@@ -58,13 +58,13 @@
             <v-col cols="12">
               <v-container class="border my-4" v-for="(question, index) in creationSurvey.questions" :key="index">
                 <v-row>
-                  <v-col cols="2">
+                  <v-col cols="3">
                     <v-subheader>Tipo de Pregunta</v-subheader>
                   </v-col>
                   <v-col cols="8">
                     <v-select
                       v-model="question.type"
-                      label="Tipo de Pregunta"
+                      label="Elige un tipo"
                       :items="typeOptions"
                       item-text="text"
                       item-value="value"
@@ -81,7 +81,7 @@
                   rules="required|max:40"
                 >
                 <v-row>
-                    <v-col cols="2">
+                    <v-col cols="3">
                       <v-subheader>Pregunta</v-subheader>
                     </v-col>
                     <v-col cols="8">
@@ -96,34 +96,36 @@
                   </v-col>
                 </v-row>
                 </validation-provider>
-                <v-row v-for="(option, index) in question.options" :key="index">
-                  <v-col cols="2">
-                    <v-subheader>Opción {{ getOptionNumber(index)}}</v-subheader>
-                  </v-col>
-                  <v-col cols="8">
-                    <v-text-field
-                      v-model="option.text"
-                      :label="`Opción ${getOptionNumber(index)}`"
-                      outlined
-                      required
-                    >
-                      <template v-slot:append-outer>
-                        <v-icon color="red" @click="deleteOption(question, index)">
-                          mdi-minus-circle-outline
-                        </v-icon>
-                      </template>
-                    </v-text-field>
-                  </v-col>
-                </v-row>
-                <v-chip
-                  class="ma-2"
-                  @click="addOption(question)"
-                >
-                  <v-avatar left>
-                    <v-icon color="purple">mdi-plus-circle</v-icon>
-                  </v-avatar>
-                  Agregar opción
-                </v-chip>
+                <div v-if="question.type !== 'FC'">
+                  <v-row v-for="(option, index) in question.options" :key="index">
+                    <v-col cols="3">
+                      <v-subheader>Opción {{ getOptionNumber(index)}}</v-subheader>
+                    </v-col>
+                    <v-col cols="8">
+                      <v-text-field
+                        v-model="option.text"
+                        :label="`Opción ${getOptionNumber(index)}`"
+                        outlined
+                        required
+                      >
+                        <template v-slot:append-outer>
+                          <v-icon color="red" @click="deleteOption(question, index)">
+                            mdi-minus-circle-outline
+                          </v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-chip
+                    class="ma-2"
+                    @click="addOption(question)"
+                  >
+                    <v-avatar left>
+                      <v-icon color="purple">mdi-plus-circle</v-icon>
+                    </v-avatar>
+                    Agregar opción
+                  </v-chip>
+                </div>
               </v-container>
             </v-col>
           </v-row>
@@ -133,12 +135,12 @@
               <v-chip
                   class="ma-2"
                   @click="addQuestion"
-                >
-                  <v-avatar left>
-                    <v-icon color="purple">mdi-plus-circle</v-icon>
-                  </v-avatar>
-                  Agregar pregunta
-                </v-chip>
+              >
+                <v-avatar left>
+                  <v-icon color="purple">mdi-plus-circle</v-icon>
+                </v-avatar>
+                Agregar pregunta
+              </v-chip>
             </v-col>
           </v-row>
 
@@ -232,7 +234,7 @@
     }),
     methods: {
       addOption(question) {
-        question.options.push(this.newOption)
+        question = question.options.push(this.newOption)
       },
       deleteOption(question, index) {
         question = question.options.splice(index, 1)
