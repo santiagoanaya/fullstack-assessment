@@ -44,7 +44,8 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    // "@nuxt/types"
   ],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -71,13 +72,14 @@ export default {
   },
 
   axios: {
-    proxy: true,
-    credentials: true
+    proxy: true
+    // credentials: true
   },
 
   proxy: {
     '/api': {
-      target: process.env.API_URL
+      target: process.env.API_URL,
+      pathRewrite: {'^/api/': '/api/'}
     }
   }
 }

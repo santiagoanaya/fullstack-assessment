@@ -1,20 +1,20 @@
 <template>
-  <v-radio-group v-model="options">
+  <v-radio-group>
     <v-radio
-      v-for="(option, index) in options"
+      v-for="(answer, index) in answers"
       :key="index"
-      :label="option.text"
+      :label="answer.title"
       :value="index"
     />
   </v-radio-group>
 </template>
 
 <script>
-  export default {
-    props: {
-      options: {
-        type: Array
-      }
-    }
-  }
-  </script>
+export default {
+  props: {
+    answers: {
+      type: Array,
+    },
+  },
+}
+</script>

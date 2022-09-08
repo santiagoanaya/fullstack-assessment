@@ -1,20 +1,20 @@
 <template>
   <div>
     <v-checkbox
-      v-model="options"
-      v-for="(option, index) in options"
-      :label="option.text"
+      v-for="(answer, index) in answers"
+      :label="answer.title"
+      :value="index"
       :key="index"
     />
   </div>
 </template>
 
 <script>
-  export default {
-    props: {
-      options: {
-        type: Array
-      }
-    }
-  }
+export default {
+  props: {
+    answers: {
+      type: Array,
+    },
+  },
+}
 </script>
