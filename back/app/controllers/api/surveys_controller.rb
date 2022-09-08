@@ -4,9 +4,13 @@ module Api
 
     # GET /surveys
     def index
-      @surveys = Survey.all
+      @surveys = Survey.all.includes(questions: :answers)
+      # @questions = Question.all.includes(:answers)
+      # @surveys.collect{ |survey| survey.questions }
 
-      render json: @surveys
+
+      # render json: @surveys, include:['questions', 'answers']
+      render json: @surveys.to_json(include: {questions: {include: :answers} })
     end
 
     # GET /surveys/1
@@ -16,10 +20,20 @@ module Api
 
     # POST /surveys
     def create
-      @survey = Survey.new(survey_params)
+      @survey = Survey.new(params.require(:survey).permit(:title, :description, questions_attributes: [
+            :_destroy,
+            :id,
+            :question_type,
+            :title,
+            answers_attributes: [
+              :_destroy,
+              :id,
+              :title
+            ]
+          ]))
 
       if @survey.save
-        render json: @survey, status: :created, location: @survey
+        render json: @survey, status: :created, location: api_surveys_path(@survey)
       else
         render json: @survey.errors, status: :unprocessable_entity
       end
@@ -48,20 +62,6 @@ module Api
       # Only allow a list of trusted parameters through.
       def survey_params
         params.fetch(:survey, {})
-        # params.require(:survey).permit(
-        #   :title,
-        #   questions_attributes: [
-        #     :_destroy,
-        #     :id,
-        #     :type,
-        #     :title,
-        #     answers_attributes: [
-        #       :_destroy,
-        #       :id,
-        #       :title
-        #     ]
-        #   ]
-        # )
       end
   end
 end
